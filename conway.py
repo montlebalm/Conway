@@ -1,21 +1,3 @@
-#!/usr/bin/env python
-
-import time
-
-
-def display_board(title, board, delay):
-	print(title)
-	for row in board:
-		print("".join(map(str, row)))
-	print()
-	time.sleep(delay)
-
-
-def get_board_from_file(path):
-	raw_seed_board = [list(line.strip()) for line in open(path)]
-	return [list(map(int, line)) for line in raw_seed_board]
-
-
 def get_new_state(state, num_neighbors):
 	"""
 	Determine the cell's fate based on the following rules:
@@ -36,25 +18,30 @@ def get_new_state(state, num_neighbors):
 
 
 class Game(object):
-	def __init__(self, board):
+	def __init__(self, board, display):
 		if board and len(board):
 			self.__board = board
+			self.__display = display
 			self.__height = len(self.__board)
 			self.__width = len(self.__board[0])
 
 	def live(self, iterations):
-		display_board("Beginning", self.__board, 0)
+		self.__display(self.__board)
 
-		for generation in range(0, iterations):
-			self.__iterate(generation + 1)
+		while iterations > 0:
+			self.__iterate()
+			iterations -= 1
 
 	def __get_cell_state(self, y, x):
+		"""
+		Get the cell state for the given x, y coordinate
+		"""
 		if 0 <= y <= self.__height - 1:
 			if 0 <= x <= self.__width - 1:
 				return self.__board[y][x]
 		return 0
 
-	def __iterate(self, generation):
+	def __iterate(self):
 		"""
 		Play out 1 generation
 		"""
@@ -79,9 +66,4 @@ class Game(object):
 				next_board[y].append(state)
 
 		self.__board = next_board
-		display_board("Generation " + str(generation), self.__board, .5)
-
-if __name__ == '__main__':
-	starting_board = get_board_from_file('seed.txt')
-	game = Game(starting_board)
-	game.live(10)
+		self.__display(self.__board)

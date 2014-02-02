@@ -13,3 +13,13 @@ From the Wikipedia [page](http://en.wikipedia.org/wiki/Conway's_Game_of_Life):
 > - Any live cell with two or three live neighbours lives on to the next generation.
 > - Any live cell with more than three live neighbours dies, as if by overcrowding.
 > - Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
+
+# Running the program
+
+You'll need to run `main.py` from the command line with 2 arguments. The first argument specifies which text file will be used for the starting board. The second argument determines how many generations the game will produce.
+
+Here's an example:
+
+```python
+python main.py boards/spaceship.txt 40
+```
